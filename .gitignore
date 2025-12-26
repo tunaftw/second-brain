@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Virtual environments
+venv/
+.venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+
+# Data (transcripts and nuggets)
+data/transcripts/
+data/nuggets/
+data/exports/
+data/audio/
+
+# Keep data structure
+!data/.gitkeep
+!data/transcripts/.gitkeep
+!data/nuggets/.gitkeep
+!data/exports/.gitkeep
+!data/audio/.gitkeep
+
+# macOS
+.DS_Store
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Temporary files
+*.tmp
+*.bak

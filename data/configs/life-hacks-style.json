@@ -1,0 +1,29 @@
+{
+  "name": "life-hacks-style",
+  "description": "For life hack / productivity podcasts like Chris Williamson",
+  "mode": "interactive",
+  "theme_configs": [
+    {
+      "theme_name": "Productivity",
+      "enabled": true,
+      "detail_level": 4
+    },
+    {
+      "theme_name": "Apps & Tools",
+      "enabled": true,
+      "detail_level": 2
+    },
+    {
+      "theme_name": "Meditation",
+      "enabled": true,
+      "detail_level": 3
+    },
+    {
+      "theme_name": "Sponsors",
+      "enabled": false,
+      "detail_level": 1
+    }
+  ],
+  "default_detail_level": 3,
+  "created_at": "2025-12-26T17:38:38.019918"
+}
