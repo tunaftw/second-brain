@@ -319,18 +319,103 @@ def list_cmd(source: str | None, year: int | None, limit: int) -> None:
 
 
 @main.command()
-@click.argument("query")
+@click.argument("query", required=False)
+@click.option("--topic", help="Filter by topic")
 @click.option("--type", "nugget_type", help="Filter by nugget type")
-def search(query: str, nugget_type: str | None) -> None:
+@click.option("--stars", type=int, help="Filter by star rating (1-3)")
+@click.option("--source", help="Filter by source name")
+@click.option("--year", type=int, help="Filter by year")
+@click.option("--limit", "-n", default=20, help="Number of results (default: 20)")
+def search(
+    query: str | None,
+    topic: str | None,
+    nugget_type: str | None,
+    stars: int | None,
+    source: str | None,
+    year: int | None,
+    limit: int,
+) -> None:
     """Search through your nuggets.
 
     Example:
         nuggets search "dopamine"
+        nuggets search --topic sleep
+        nuggets search --stars 3
         nuggets search "morning routine" --type action
     """
-    console.print(f"[blue]Searching for:[/] {query}")
-    # TODO: Implement search
-    console.print("[yellow]Search not yet implemented[/]")
+    from nuggets.index import IndexManager
+    from nuggets.models import NuggetType
+
+    manager = IndexManager()
+    lib_index = manager.load_index()
+
+    if lib_index is None:
+        console.print("[yellow]No index found. Run 'nuggets index rebuild' first.[/]")
+        return
+
+    # Convert nugget_type string to NuggetType enum if provided
+    nugget_type_enum = None
+    if nugget_type:
+        try:
+            nugget_type_enum = NuggetType(nugget_type.lower())
+        except ValueError:
+            valid_types = ", ".join([t.value for t in NuggetType])
+            console.print(f"[red]Error:[/] Invalid nugget type '{nugget_type}'")
+            console.print(f"[dim]Valid types: {valid_types}[/]")
+            return
+
+    results = manager.search(
+        lib_index,
+        query=query,
+        topic=topic,
+        stars=stars,
+        source=source,
+        year=year,
+        nugget_type=nugget_type_enum,
+    )
+
+    if not results:
+        console.print("[yellow]No nuggets found matching your search.[/]")
+        return
+
+    # Sort by importance then date
+    results.sort(key=lambda x: (-(x.importance or 0), x.date))
+
+    # Limit
+    total = len(results)
+    results = results[:limit]
+
+    # Display
+    console.print(f"[bold]Found {total} nuggets[/]" + (f" (showing {limit})" if total > limit else "") + "\n")
+
+    type_icons = {
+        "insight": "💡",
+        "action": "✅",
+        "quote": "💬",
+        "concept": "📖",
+        "story": "📖",
+    }
+
+    for entry in results:
+        icon = type_icons.get(entry.type.value, "•")
+        stars_str = "⭐" * (entry.stars or 0) if entry.stars else ""
+
+        # Content (truncate if too long)
+        content = entry.content
+        if len(content) > 100:
+            content = content[:97] + "..."
+
+        console.print(f"{icon} [bold]{content}[/]")
+
+        # Metadata line
+        meta_parts = [f"[dim]{entry.source_name or 'Unknown'}[/]", f"[dim]{entry.date.strftime('%Y-%m-%d')}[/]"]
+        if entry.topic:
+            meta_parts.append(f"[cyan]#{entry.topic}[/]")
+        if stars_str:
+            meta_parts.append(stars_str)
+
+        console.print(f"   {' • '.join(meta_parts)}")
+        console.print()
 
 
 # Config command group
