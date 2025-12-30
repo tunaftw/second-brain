@@ -382,6 +382,73 @@ def config_delete(name: str) -> None:
         raise SystemExit(1)
 
 
+# Index command group
+@main.group()
+def index() -> None:
+    """Manage the library index."""
+    pass
+
+
+@index.command(name="rebuild")
+def index_rebuild() -> None:
+    """Rebuild the library index from analysis files."""
+    from nuggets.index import IndexManager
+
+    manager = IndexManager()
+
+    with console.status("[bold blue]Rebuilding index..."):
+        lib_index = manager.build_index()
+        manager.save_index(lib_index)
+
+    console.print("[green]\u2713[/] Index rebuilt")
+    console.print(f"  Episodes: {lib_index.total_episodes}")
+    console.print(f"  Nuggets: {lib_index.total_nuggets}")
+    sources = [s for s in lib_index.sources if s]  # Filter empty strings
+    console.print(f"  Sources: {', '.join(sources) if sources else 'None'}")
+    console.print(f"[dim]Saved to: data/library/index.json[/]")
+
+
+@index.command(name="stats")
+def index_stats() -> None:
+    """Show library statistics."""
+    from nuggets.index import IndexManager
+
+    manager = IndexManager()
+    lib_index = manager.load_index()
+
+    if lib_index is None or lib_index.total_nuggets == 0:
+        console.print("[yellow]No index found. Run 'nuggets index rebuild' first.[/]")
+        return
+
+    stats = manager.get_stats(lib_index)
+
+    console.print()
+    console.print("[bold]Podcast Nuggets Library[/]")
+    console.print("\u2500" * 40)
+    console.print(f"Episodes:     {lib_index.total_episodes}")
+    console.print(f"Nuggets:      {lib_index.total_nuggets}")
+
+    # Stars breakdown
+    starred = stats.get("starred_count", 0)
+    console.print(f"  Starred:    {starred}")
+    console.print(f"  Unrated:    {lib_index.total_nuggets - starred}")
+
+    # Top sources
+    if stats.get("by_source"):
+        console.print()
+        console.print("[bold]Top sources:[/]")
+        for source, count in list(stats["by_source"].items())[:5]:
+            source_name = source if source else "(unknown)"
+            console.print(f"  {source_name:20} {count} nuggets")
+
+    # Top topics
+    if stats.get("by_topic"):
+        console.print()
+        console.print("[bold]Top topics:[/]")
+        for topic, count in list(stats["by_topic"].items())[:5]:
+            console.print(f"  {topic:20} {count} nuggets")
+
+
 @main.command()
 @click.argument("url")
 @click.option(
