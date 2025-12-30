@@ -385,3 +385,63 @@ def save_transcript(
         f.write("\n")
 
     return filepath
+
+
+def save_raw_youtube(
+    result: dict,
+    base_path: Path | None = None,
+) -> Path:
+    """Save raw YouTube data to library structure.
+
+    Args:
+        result: Result dict from process_youtube_video.
+        base_path: Base directory (default: Path("data")).
+
+    Returns:
+        Path to saved JSON file.
+    """
+    import json
+    from datetime import datetime
+
+    from nuggets.library import LibraryPaths, slugify
+
+    paths = LibraryPaths(base=base_path)
+
+    # Extract components
+    channel = result.get("channel", "unknown")
+    video_id = result["video_id"]
+
+    # Parse upload date
+    upload_date = result.get("upload_date", "")
+    if upload_date and len(upload_date) == 8:
+        date = f"{upload_date[:4]}-{upload_date[4:6]}-{upload_date[6:8]}"
+    else:
+        date = datetime.now().strftime("%Y-%m-%d")
+
+    # Build file path
+    filepath = paths.raw_youtube(channel, date, video_id)
+    filepath.parent.mkdir(parents=True, exist_ok=True)
+
+    # Prepare data
+    data = {
+        "video_id": video_id,
+        "channel": channel,
+        "channel_slug": slugify(channel),
+        "title": result.get("title"),
+        "date": date,
+        "upload_date": upload_date,
+        "duration": result.get("duration"),
+        "url": result.get("url"),
+        "chapters": result.get("chapters", []),
+        "transcript": result.get("transcript"),
+        "transcript_source": result.get("transcript_source"),
+        "has_timestamps": result.get("has_timestamps", False),
+    }
+
+    # Write JSON
+    filepath.write_text(
+        json.dumps(data, indent=2, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+    return filepath
