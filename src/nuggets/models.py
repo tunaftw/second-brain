@@ -105,6 +105,17 @@ class Nugget(BaseModel):
         None, description="Raw transcript segment (for exhaustive detail level)"
     )
 
+    # Knowledge library fields
+    topic: Optional[str] = Field(
+        None, description="Topic category: sleep, productivity, health, etc."
+    )
+    wisdom_type: Optional[str] = Field(
+        None, description="Type: principle, habit, mental-model, life-lesson, technique, warning"
+    )
+    stars: Optional[int] = Field(
+        None, ge=1, le=3, description="Personal rating 1-3 (None = unrated)"
+    )
+
 
 class Episode(BaseModel):
     """An analyzed episode with extracted nuggets.
