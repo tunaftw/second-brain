@@ -248,18 +248,74 @@ def export_cmd(episode_id: str, output_format: str, folder: str, output: str | N
 
 @main.command(name="list")
 @click.option("--source", help="Filter by source name")
-@click.option("--tag", help="Filter by tag")
-def list_cmd(source: str | None, tag: str | None) -> None:
+@click.option("--year", type=int, help="Filter by year")
+@click.option("--limit", "-n", default=20, help="Number of results (default: 20)")
+def list_cmd(source: str | None, year: int | None, limit: int) -> None:
     """List all analyzed episodes.
 
     Example:
         nuggets list
         nuggets list --source "Huberman Lab"
-        nuggets list --tag sleep
+        nuggets list --year 2024
     """
-    console.print("[blue]Listing episodes...[/]")
-    # TODO: Implement list
-    console.print("[yellow]List not yet implemented[/]")
+    from nuggets.index import IndexManager
+
+    manager = IndexManager()
+    lib_index = manager.load_index()
+
+    if lib_index is None or lib_index.total_episodes == 0:
+        console.print("[yellow]No episodes found. Run 'nuggets index rebuild' first.[/]")
+        return
+
+    # Group by episode
+    episodes: dict[str, dict] = {}
+    for entry in lib_index.entries:
+        if entry.episode_id not in episodes:
+            episodes[entry.episode_id] = {
+                "source": entry.source_name,
+                "date": entry.date.strftime("%Y-%m-%d"),
+                "nugget_count": 0,
+            }
+        episodes[entry.episode_id]["nugget_count"] += 1
+
+    # Apply filters
+    results = list(episodes.items())
+
+    if source:
+        source_lower = source.lower()
+        results = [(eid, e) for eid, e in results if source_lower in e["source"].lower()]
+
+    if year:
+        results = [(eid, e) for eid, e in results if e["date"].startswith(str(year))]
+
+    # Sort by date descending
+    results.sort(key=lambda x: x[1]["date"], reverse=True)
+
+    # Limit
+    total = len(results)
+    results = results[:limit]
+
+    if not results:
+        console.print("[yellow]No episodes match filters.[/]")
+        return
+
+    # Display
+    table = Table(title=f"Episodes ({len(results)} of {total})")
+    table.add_column("Date", style="cyan", width=12)
+    table.add_column("Source", style="white")
+    table.add_column("Nuggets", justify="center", width=8)
+    table.add_column("ID", style="dim")
+
+    for episode_id, ep in results:
+        short_id = episode_id[:35] + "..." if len(episode_id) > 35 else episode_id
+        table.add_row(
+            ep["date"],
+            ep["source"] or "(unknown)",
+            str(ep["nugget_count"]),
+            short_id,
+        )
+
+    console.print(table)
 
 
 @main.command()
