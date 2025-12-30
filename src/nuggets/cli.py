@@ -459,9 +459,13 @@ def youtube(
         f"[green]\u2713[/] Transcript: {result['transcript_source'].replace('_', ' ')}"
     )
 
-    # Save transcript
+    # Save raw data to library structure
+    from nuggets.transcribe.youtube import save_raw_youtube
+    raw_filepath = save_raw_youtube(result)
+    console.print(f"[green]\u2713[/] Raw data saved to: [cyan]{raw_filepath}[/]")
+
+    # Also save legacy transcript for backwards compatibility
     filepath = save_transcript(result)
-    console.print(f"[green]\u2713[/] Saved to: [cyan]{filepath}[/]")
 
     # Show transcript preview
     transcript_lines = result["transcript"].split("\n")
