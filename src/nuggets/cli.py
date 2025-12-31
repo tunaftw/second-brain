@@ -418,6 +418,116 @@ def search(
         console.print()
 
 
+@main.command()
+@click.argument("nugget_id", required=False)
+@click.argument("stars", type=int, required=False)
+@click.option("--interactive", "-i", is_flag=True, help="Interactive curation mode")
+def star(nugget_id: str | None, stars: int | None, interactive: bool) -> None:
+    """Rate a nugget with stars (1-3).
+
+    Examples:
+        nuggets star youtube-2025-12-25-abc123-0 3
+        nuggets star --interactive
+    """
+    from nuggets.curation import set_nugget_stars, get_unrated_nuggets
+
+    if interactive:
+        _interactive_curation()
+        return
+
+    if not nugget_id or stars is None:
+        console.print("[red]Error:[/] Provide nugget_id and stars (1-3)")
+        console.print("[dim]Example: nuggets star youtube-2025-12-25-abc123-0 3[/]")
+        console.print("[dim]Or use: nuggets star --interactive[/]")
+        return
+
+    if stars < 1 or stars > 3:
+        console.print("[red]Error:[/] Stars must be 1, 2, or 3")
+        return
+
+    # Parse nugget_id: episode_id-index
+    parts = nugget_id.rsplit("-", 1)
+    if len(parts) != 2:
+        console.print(f"[red]Error:[/] Invalid nugget ID format: {nugget_id}")
+        return
+
+    episode_id = parts[0]
+    try:
+        nugget_index = int(parts[1])
+    except ValueError:
+        console.print(f"[red]Error:[/] Invalid nugget index in: {nugget_id}")
+        return
+
+    success = set_nugget_stars(episode_id, nugget_index, stars)
+
+    if success:
+        console.print(f"[green]✓[/] Set {'⭐' * stars} on nugget {nugget_id}")
+        console.print("[dim]Run 'nuggets index rebuild' to update the index[/]")
+    else:
+        console.print(f"[red]Error:[/] Nugget not found: {nugget_id}")
+
+
+def _interactive_curation() -> None:
+    """Interactive curation mode."""
+    from nuggets.curation import get_unrated_nuggets, set_nugget_stars
+
+    unrated = get_unrated_nuggets()
+
+    if not unrated:
+        console.print("[green]✓[/] All nuggets have been rated!")
+        return
+
+    console.print(f"[bold]Interactive Curation[/]")
+    console.print(f"Found {len(unrated)} unrated nuggets\n")
+    console.print("[dim]Commands: 1/2/3 = set stars, s = skip, q = quit[/]\n")
+
+    rated_count = 0
+
+    for nugget in unrated:
+        # Display nugget
+        type_icons = {"insight": "💡", "action": "✅", "quote": "💬", "concept": "📖", "story": "📖"}
+        icon = type_icons.get(nugget["type"], "•")
+
+        content = nugget["content"]
+        if len(content) > 100:
+            content = content[:97] + "..."
+
+        console.print(f"{icon} [bold]{content}[/]")
+        console.print(f"   [dim]{nugget['source_name']} • {nugget['date']}[/]")
+        if nugget.get("importance"):
+            console.print(f"   [dim]AI importance: {nugget['importance']}/5[/]")
+
+        # Get input
+        try:
+            choice = console.input("\n   [bold]Rate (1/2/3/s/q):[/] ").strip().lower()
+        except (KeyboardInterrupt, EOFError):
+            break
+
+        if choice == "q":
+            break
+        elif choice == "s":
+            console.print()
+            continue
+        elif choice in ("1", "2", "3"):
+            stars_val = int(choice)
+            success = set_nugget_stars(
+                nugget["episode_id"],
+                nugget["nugget_index"],
+                stars_val,
+            )
+            if success:
+                console.print(f"   [green]✓ Set {'⭐' * stars_val}[/]\n")
+                rated_count += 1
+            else:
+                console.print(f"   [red]Failed to save[/]\n")
+        else:
+            console.print(f"   [yellow]Skipped[/]\n")
+
+    console.print(f"\n[bold]Done![/] Rated {rated_count} nuggets.")
+    if rated_count > 0:
+        console.print("[dim]Run 'nuggets index rebuild' to update the index[/]")
+
+
 # Config command group
 @main.group()
 def config() -> None:
