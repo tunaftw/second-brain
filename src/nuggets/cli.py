@@ -172,49 +172,177 @@ def analyze(transcript: str, output: str | None) -> None:
 
 
 @main.command(name="export")
-@click.argument("episode_id")
+@click.argument("episode_id", required=False)
 @click.option(
     "--format",
     "output_format",
     type=click.Choice(["apple-notes", "markdown", "json"]),
-    default="apple-notes",
-    help="Export format (default: apple-notes)",
+    default="markdown",
+    help="Export format (default: markdown)",
 )
 @click.option("--folder", default="Podcast Nuggets", help="Apple Notes folder name")
-@click.option("--output", "-o", type=click.Path(), help="Output file path (for markdown/json)")
-def export_cmd(episode_id: str, output_format: str, folder: str, output: str | None) -> None:
-    """Export an analyzed episode to various formats.
+@click.option("--output", "-o", type=click.Path(), help="Output file path")
+@click.option("--stars", type=int, help="Filter by minimum stars (1-3)")
+@click.option("--topic", help="Filter by topic")
+@click.option("--source", help="Filter by source name")
+@click.option("--best-of", is_flag=True, help="Export only starred nuggets (best of)")
+@click.option("--group-by", type=click.Choice(["topic", "source", "type"]), help="Group nuggets by field")
+def export_cmd(
+    episode_id: str | None,
+    output_format: str,
+    folder: str,
+    output: str | None,
+    stars: int | None,
+    topic: str | None,
+    source: str | None,
+    best_of: bool,
+    group_by: str | None,
+) -> None:
+    """Export nuggets to various formats.
 
     Examples:
-        nuggets export youtube-2025-12-25-hLIvhTiE
-        nuggets export youtube-2025-12-25-hLIvhTiE --format apple-notes --folder "Podcasts"
-        nuggets export youtube-2025-12-25-hLIvhTiE --format json
+        nuggets export ep123                    # Single episode to Markdown
+        nuggets export ep123 --format apple-notes
+        nuggets export --best-of               # All starred nuggets
+        nuggets export --topic sleep           # All sleep nuggets
+        nuggets export --stars 3 --group-by topic  # 3-star grouped by topic
     """
-    import json
+    import json as json_module
+    from nuggets.models import Episode
+    from nuggets.index import IndexManager
+
+    # Single episode mode
+    if episode_id:
+        _export_single_episode(episode_id, output_format, folder, output)
+        return
+
+    # Collection mode - requires filters
+    if not (stars or topic or source or best_of):
+        console.print("[red]Error:[/] Specify episode_id or use filters (--stars, --topic, --source, --best-of)")
+        return
+
+    # Load index
+    manager = IndexManager()
+    lib_index = manager.load_index()
+
+    if lib_index is None:
+        console.print("[red]Error:[/] No index found. Run: nuggets index rebuild")
+        return
+
+    # Apply filters
+    results = list(lib_index.entries)
+
+    if best_of:
+        results = [e for e in results if e.stars is not None]
+
+    if stars:
+        results = [e for e in results if (e.stars or 0) >= stars]
+
+    if topic:
+        results = [e for e in results if e.topic and topic.lower() in e.topic.lower()]
+
+    if source:
+        results = [e for e in results if source.lower() in e.source_name.lower()]
+
+    if not results:
+        console.print("[yellow]No nuggets match the filters.[/]")
+        return
+
+    # Convert to dicts
+    nuggets = [
+        {
+            "content": e.content,
+            "type": e.type.value if hasattr(e.type, "value") else e.type,
+            "stars": e.stars,
+            "topic": e.topic,
+            "source_name": e.source_name,
+            "date": e.date.isoformat() if hasattr(e.date, "isoformat") else str(e.date),
+        }
+        for e in results
+    ]
+
+    # Build title
+    title_parts = []
+    if best_of:
+        title_parts.append("Best Of")
+    if stars:
+        title_parts.append(f"{stars}+ Stars")
+    if topic:
+        title_parts.append(topic.title())
+    if source:
+        title_parts.append(source)
+    title = " - ".join(title_parts) if title_parts else "Nuggets Collection"
+
+    # Export
+    if output_format == "markdown":
+        from nuggets.export.collection import export_collection_markdown
+        from datetime import date
+
+        if output is None:
+            slug = title.lower().replace(" ", "-").replace("/", "-")[:30]
+            output = f"data/exports/{date.today().isoformat()}-{slug}.md"
+
+        path = export_collection_markdown(nuggets, output, title, group_by)
+        console.print(f"[green]✓[/] Exported {len(nuggets)} nuggets to: [cyan]{path}[/]")
+
+    elif output_format == "json":
+        from datetime import date
+
+        if output is None:
+            slug = title.lower().replace(" ", "-").replace("/", "-")[:30]
+            output = f"data/exports/{date.today().isoformat()}-{slug}.json"
+
+        output_path = Path(output)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(
+            json_module.dumps({"title": title, "nuggets": nuggets}, indent=2, ensure_ascii=False),
+            encoding="utf-8",
+        )
+        console.print(f"[green]✓[/] Exported {len(nuggets)} nuggets to: [cyan]{output_path}[/]")
+
+    else:
+        console.print(f"[red]Error:[/] Collection export to {output_format} not supported. Use --format markdown or json.")
+
+
+def _export_single_episode(episode_id: str, output_format: str, folder: str, output: str | None) -> None:
+    """Export a single episode."""
+    import json as json_module
     from nuggets.models import Episode
 
-    # Find the nuggets file
-    nuggets_dir = Path("data/nuggets")
-    nuggets_file = nuggets_dir / f"{episode_id}.json"
+    # Find in analysis/ directory
+    analysis_dir = Path("data/analysis")
+    episode_file = None
 
-    if not nuggets_file.exists():
-        # Try partial match
-        matches = list(nuggets_dir.glob(f"*{episode_id}*.json"))
-        if len(matches) == 1:
-            nuggets_file = matches[0]
-        elif len(matches) > 1:
-            console.print(f"[red]Error:[/] Multiple matches found:")
-            for m in matches:
-                console.print(f"  - {m.stem}")
-            raise SystemExit(1)
+    for f in analysis_dir.rglob("*.json"):
+        try:
+            data = json_module.loads(f.read_text(encoding="utf-8"))
+            if data.get("id") == episode_id:
+                episode_file = f
+                break
+        except (json_module.JSONDecodeError, KeyError):
+            continue
+
+    # Fallback to old location
+    if episode_file is None:
+        nuggets_dir = Path("data/nuggets")
+        if (nuggets_dir / f"{episode_id}.json").exists():
+            episode_file = nuggets_dir / f"{episode_id}.json"
         else:
-            console.print(f"[red]Error:[/] Episode not found: {episode_id}")
-            console.print(f"[dim]Looking in: {nuggets_dir}[/]")
-            raise SystemExit(1)
+            matches = list(nuggets_dir.glob(f"*{episode_id}*.json"))
+            if len(matches) == 1:
+                episode_file = matches[0]
+            elif len(matches) > 1:
+                console.print("[red]Error:[/] Multiple matches found:")
+                for m in matches:
+                    console.print(f"  - {m.stem}")
+                return
+            else:
+                console.print(f"[red]Error:[/] Episode not found: {episode_id}")
+                return
 
     # Load episode
-    with open(nuggets_file, encoding="utf-8") as f:
-        data = json.load(f)
+    with open(episode_file, encoding="utf-8") as f:
+        data = json_module.load(f)
     episode = Episode.model_validate(data)
 
     if output_format == "apple-notes":
@@ -225,25 +353,27 @@ def export_cmd(episode_id: str, output_format: str, folder: str, output: str | N
                 export_to_apple_notes(episode, folder=folder)
             except RuntimeError as e:
                 console.print(f"[red]Error:[/] {e}")
-                raise SystemExit(1)
+                return
             except Exception as e:
                 console.print(f"[red]Error exporting:[/] {e}")
-                raise SystemExit(1)
+                return
 
-        console.print(f"[green]✓[/] Exported to Apple Notes")
-        console.print(f"[dim]Folder: {folder}[/]")
-        console.print(f"[dim]Note: {episode.title}[/]")
-
-    elif output_format == "json":
-        output_path = Path(output) if output else Path(f"data/exports/{episode_id}.json")
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(output_path, "w", encoding="utf-8") as f:
-            f.write(episode.model_dump_json(indent=2))
-        console.print(f"[green]✓[/] Exported to: [cyan]{output_path}[/]")
+        console.print(f"[green]✓[/] Exported to Apple Notes folder: [cyan]{folder}[/]")
 
     elif output_format == "markdown":
-        console.print("[yellow]Markdown export not yet implemented[/]")
-        console.print("[dim]Use --format apple-notes instead[/]")
+        from nuggets.export.markdown import export_to_markdown
+
+        path = export_to_markdown(episode, output)
+        console.print(f"[green]✓[/] Exported to: [cyan]{path}[/]")
+
+    elif output_format == "json":
+        output_path = Path(output) if output else Path(f"data/exports/{episode.id}.json")
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(
+            data if isinstance(data, str) else json_module.dumps(data, indent=2, ensure_ascii=False),
+            encoding="utf-8",
+        )
+        console.print(f"[green]✓[/] Exported to: [cyan]{output_path}[/]")
 
 
 @main.command(name="list")
