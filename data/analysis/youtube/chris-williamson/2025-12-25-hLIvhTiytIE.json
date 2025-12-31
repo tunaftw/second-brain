@@ -1,0 +1,147 @@
+{
+  "id": "youtube-2025-12-25-hLIvhTiE",
+  "source_type": "youtube",
+  "source_name": "Chris Williamson",
+  "title": "Life Hacks: A Christmas Special (2025)",
+  "date": "2025-12-25T00:00:00",
+  "url": "https://www.youtube.com/watch?v=hLIvhTiytIE",
+  "duration_minutes": 130,
+  "guests": ["Johnny", "George", "Yousef"],
+  "summary": "Chris Williamson och hans team delar sina bästa life hacks och lärdomar från 2024. Episoden täcker meditation och mindfulness (Waking Up-appen), produktivitetsverktyg (chess clock-metoden, Brick för iPhone), reseappar (Uber för flyg, Flighty), och djupare insikter om mål, karaktärsutveckling och lycka. En central insikt är att målen i sig inte ger bestående tillfredsställelse - det är personen du blir på vägen som är den verkliga vinsten.",
+  "nuggets": [
+    {
+      "content": "Waking Up-appens 'Fundamentals'-serie av Sam Harris är nyckeln till att faktiskt börja meditera regelbundet. Det handlar om att förstå VARFÖR du ska meditera, inte bara hur.",
+      "type": "action",
+      "timestamp": "01:27",
+      "context": "Johnny delar sin första life hack",
+      "importance": 5,
+      "speaker": "Johnny"
+    },
+    {
+      "content": "Meditation är som att vakna från en dröm där du sitter i en fängelsecell och försöker möblera om den. De flesta människor är helt absorberade av sina tankar och känslor - meditation låter dig kliva ut ur drömmen.",
+      "type": "insight",
+      "timestamp": "02:13",
+      "context": "Sam Harris-analogi om meditation",
+      "importance": 5,
+      "speaker": "Johnny"
+    },
+    {
+      "content": "Identitetsförändring är nyckeln till varaktiga vanor. Det är skillnaden mellan att gå till gymmet för att du 'borde' och att det bara är en del av vem du är.",
+      "type": "insight",
+      "timestamp": "02:57",
+      "context": "Diskussion om vanor och identitet",
+      "importance": 5,
+      "speaker": "Johnny"
+    },
+    {
+      "content": "Allt är internt. När du springer över mållinjen efter en maraton är det ingen som droppar dopamin i din hjärna - du genererar allt själv.",
+      "type": "quote",
+      "timestamp": "05:37",
+      "context": "Huberman-citat om intern belöning",
+      "importance": 5,
+      "speaker": "Chris Williamson"
+    },
+    {
+      "content": "Du har 10 gånger fler neuroner som går från hjärnan till ögat än tvärtom. Din hjärna skapar konstant en förutsägelse av verkligheten, inte en avbildning.",
+      "type": "concept",
+      "timestamp": "06:28",
+      "context": "Diskussion om perception och verklighet",
+      "importance": 4,
+      "speaker": "Johnny"
+    },
+    {
+      "content": "Använd Uber för att boka flyg. Det sparar tid, har redan dina uppgifter, ger 10% tillbaka i Uber-krediter, och har prisgaranti om priset sjunker.",
+      "type": "action",
+      "timestamp": "11:18",
+      "context": "Yousef delar sin bästa resehack",
+      "importance": 4,
+      "speaker": "Yousef"
+    },
+    {
+      "content": "Flighty-appen för flygspårning ger dig gate-information före flygplatstavlan, spårar förseningar, baggage och historik. Du behöver aldrig kolla en flygplatstavla igen.",
+      "type": "action",
+      "timestamp": "14:26",
+      "context": "Chris rekommenderar Flighty",
+      "importance": 4,
+      "speaker": "Chris Williamson"
+    },
+    {
+      "content": "Chess clock-metoden för deep work: Sätt en timer på 4 timmar och pausa den varje gång du gör något annat än arbetet. Du inser snabbt hur lite tid du faktiskt spenderar på uppgiften.",
+      "type": "action",
+      "timestamp": "18:54",
+      "context": "Tim Urban's produktivitetsteknik",
+      "importance": 5,
+      "speaker": "George"
+    },
+    {
+      "content": "Om du lyckas få 4 timmars fokuserat arbete per dag är du i topp 1%. De flesta tror de jobbar 8-10 timmar men spenderar mycket mindre tid på faktiskt arbete.",
+      "type": "insight",
+      "timestamp": "18:36",
+      "context": "Tim Urban om deep work",
+      "importance": 5,
+      "speaker": "George"
+    },
+    {
+      "content": "Brick för iPhone: En NFC-enhet som fysiskt låser dina appar. För att låsa upp måste du gå till en annan del av huset och tappa enheten. Friktionen gör det omöjligt att scrollla av vana.",
+      "type": "action",
+      "timestamp": "22:43",
+      "context": "Johnny om att blockera telefondistraktioner",
+      "importance": 4,
+      "speaker": "Johnny"
+    },
+    {
+      "content": "Ha en Moleskine-anteckningsbok i fickan. Telefonen viskar alltid till dig att scrolla. Anteckningsboken börjar också viska - men den säger 'kolla sida 3, den idén du skrev ner'.",
+      "type": "insight",
+      "timestamp": "25:01",
+      "context": "George om analog vs digital",
+      "importance": 4,
+      "speaker": "George"
+    },
+    {
+      "content": "Fundamental attribution error: Vi överattribuerar andras beteende till deras karaktär, men vårt eget till situationen. 'Jag körde om för jag var sen. Han körde om för han är en dålig förare.'",
+      "type": "concept",
+      "timestamp": "30:14",
+      "context": "Yousef om kognitiva bias",
+      "importance": 4,
+      "speaker": "Yousef"
+    },
+    {
+      "content": "Människor köper med emotion och motiverar med logik - men det gäller ALLT, inte bara köpbeteende. Känslan kommer först, sedan hittar hjärnan en berättelse som förklarar den.",
+      "type": "insight",
+      "timestamp": "31:25",
+      "context": "Diskussion om känslor och rationalitet",
+      "importance": 5,
+      "speaker": "Yousef"
+    },
+    {
+      "content": "Målen i sig ger inte bestående tillfredsställelse - dopaminet från att nå dem försvinner snabbt. Men karaktärsdragen du utvecklar genom att jaga svåra mål är det som faktiskt förändras och består.",
+      "type": "insight",
+      "timestamp": "51:55",
+      "context": "Johnny om mål vs personlig utveckling",
+      "importance": 5,
+      "speaker": "Johnny"
+    },
+    {
+      "content": "Du måste fortfarande bli 'lurad' av spelet och tro att målet är värt att jaga. Men den verkliga vinsten är personen du blir längs vägen, inte målet i sig.",
+      "type": "insight",
+      "timestamp": "53:05",
+      "context": "Diskussion om mål och motivation",
+      "importance": 5,
+      "speaker": "Johnny"
+    },
+    {
+      "content": "Felix Dennis (miljardär) skrev: 'Trots miljarderna jag samlat skulle jag byta plats med dig på ett ögonblick, för du har det jag inte har - tid.'",
+      "type": "quote",
+      "timestamp": "62:41",
+      "context": "Yousef citerar 'How to Get Rich'",
+      "importance": 4,
+      "speaker": "Yousef"
+    }
+  ],
+  "tags": ["meditation", "produktivitet", "deep-work", "mindfulness", "mål", "lycka", "vanor", "identitet", "resor", "appar", "self-improvement"],
+  "personal_notes": "",
+  "rating": null,
+  "transcript_path": "data/transcripts/youtube/chris-williamson-2025-12-25-hLIvhTiytIE.txt",
+  "created_at": "2025-12-26T12:00:00",
+  "analyzed_at": "2025-12-26T12:00:00"
+}

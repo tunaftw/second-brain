@@ -1,0 +1,30 @@
+{
+  "video_id": "jNQXAC9IVRw",
+  "channel": "jawed",
+  "channel_slug": "jawed",
+  "title": "Me at the zoo",
+  "date": "2005-04-24",
+  "upload_date": "20050424",
+  "duration": 19,
+  "url": "https://www.youtube.com/watch?v=jNQXAC9IVRw",
+  "chapters": [
+    {
+      "title": "Intro",
+      "start_time": 0.0,
+      "end_time": 5.0
+    },
+    {
+      "title": "The cool thing",
+      "start_time": 5.0,
+      "end_time": 17.0
+    },
+    {
+      "title": "End",
+      "start_time": 17.0,
+      "end_time": 19
+    }
+  ],
+  "transcript": "[00:01] All right, so here we are, in front of the\nelephants\n[00:05] the cool thing about these guys is that they\nhave really...\n[00:07] really really long trunks\n[00:12] and that's cool\n[00:14] (baaaaaaaaaaahhh!!)\n[00:16] and that's pretty much all there is to\nsay",
+  "transcript_source": "youtube_captions",
+  "has_timestamps": true
+}

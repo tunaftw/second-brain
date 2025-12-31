@@ -1,0 +1,277 @@
+{
+  "episode_id": "youtube-gEF67-G9MO0",
+  "source": {
+    "platform": "youtube",
+    "video_id": "gEF67-G9MO0",
+    "title": "Alex Hormozi: How To Make So Much Money You Question The Meaning Of It",
+    "channel": "Jay Shetty Podcast",
+    "duration": "2:02:52",
+    "url": "https://www.youtube.com/watch?v=gEF67-G9MO0"
+  },
+  "analysis_config": {
+    "mode": "interactive",
+    "analyzed_by": "claude-code",
+    "chapters_source": "youtube"
+  },
+  "quotes": [
+    {
+      "text": "People fail not because there's some magical list nobody has. They fail because it's an obvious list nobody does.",
+      "timestamp": "00:56",
+      "speaker": "Alex Hormozi"
+    },
+    {
+      "text": "Do so much work it would be unreasonable for you not to be successful.",
+      "timestamp": "1:58:21",
+      "speaker": "Alex Hormozi",
+      "context": "Best advice ever received"
+    },
+    {
+      "text": "You can build something very big in about 5 to 7 years. The problem is most people spend that same 5 to 7 years reliving the same 30 days over and over again.",
+      "timestamp": "10:16",
+      "speaker": "Alex Hormozi"
+    },
+    {
+      "text": "People don't really give up on their dreams. They see what it takes to get their dreams and then decide it's too expensive.",
+      "timestamp": "15:21",
+      "speaker": "Alex Hormozi"
+    },
+    {
+      "text": "If we make who we become the goal rather than the thing we achieve, instead of winning once a decade we can win every day.",
+      "timestamp": "15:29",
+      "speaker": "Alex Hormozi"
+    },
+    {
+      "text": "Fear is a mile wide and an inch deep.",
+      "timestamp": "58:16",
+      "speaker": "Alex Hormozi (Leila quote)"
+    },
+    {
+      "text": "Besides death, all failure is psychological.",
+      "timestamp": "58:33",
+      "speaker": "Jo Willick (via Jay Shetty)"
+    },
+    {
+      "text": "If you do nothing, people will criticize you. If you do something, people will criticize you. So criticism is a fixed cost.",
+      "timestamp": "1:00:30",
+      "speaker": "Alex Hormozi"
+    },
+    {
+      "text": "It takes about 20 hours to become proficient in just about anything. It just takes people 10 years to get the first 20 hours.",
+      "timestamp": "1:00:39",
+      "speaker": "Alex Hormozi"
+    },
+    {
+      "text": "You don't want to listen to the people who are closest to you. You want to listen to the people who are closest to your goals.",
+      "timestamp": "1:00:55",
+      "speaker": "Alex Hormozi"
+    },
+    {
+      "text": "If we define commitment as the elimination of alternatives, then we need to commit to the work.",
+      "timestamp": "1:30:54",
+      "speaker": "Alex Hormozi"
+    },
+    {
+      "text": "It's not 10,000 hours, it's 10,000 iterations.",
+      "timestamp": "1:31:43",
+      "speaker": "Naval Ravikant (via Alex Hormozi)"
+    },
+    {
+      "text": "Focus. One thing all in.",
+      "timestamp": "1:58:49",
+      "speaker": "Alex Hormozi",
+      "context": "Lesson that took too long to learn"
+    },
+    {
+      "text": "Follow your passion.",
+      "timestamp": "1:58:29",
+      "speaker": "Alex Hormozi",
+      "context": "Worst advice ever received"
+    },
+    {
+      "text": "Find people better than you and do whatever you can to get them to help you, including helping them first without expectation.",
+      "timestamp": "1:58:37",
+      "speaker": "Alex Hormozi",
+      "context": "Advice I wish I received sooner"
+    }
+  ],
+  "nuggets": [
+    {
+      "id": 1,
+      "theme": "Myten om passiv inkomst",
+      "chapter": "Why Most People Misunderstand How to Build a Business",
+      "timestamp": "02:10",
+      "title": "Investering ar sista steget, inte forsta",
+      "insight": "De flesta tror att pengar kommer fran investeringar. Men investering ar det SISTA du gor, inte det forsta. De rikaste manniskorna har enorma aktiva inkomster - det ar overskottet fran dessa som gor att de kan ta stora risker med investeringar.",
+      "actionable": "Fokusera pa att oka din inkomst per tidsenhet istallet for att jaga 'passiv inkomst'. Fraga: Vad kan jag byta min tid mot som ger mig mer an jag far nu?"
+    },
+    {
+      "id": 2,
+      "theme": "5 faser av entreprenorskap",
+      "chapter": "The Five Emotional Stages Every Entrepreneur Goes Through",
+      "timestamp": "07:41",
+      "title": "De fem faserna - och fallan i fas tre",
+      "insight": "1) Oinformerad optimism (kompisen tjande pengar!), 2) Informerad pessimism (det har suger), 3) Valley of Despair (jag har forlorat allt), 4) Informerad optimism (nu fattar jag spelreglerna), 5) Achievement. DE FLESTA hoppar fran fas 3 tillbaka till fas 1 med ett nytt projekt istallet for att trangda igenom.",
+      "actionable": "Stanna i smirtan. 'Staying in the pain is what gives you the catalyst to learn how to get out of pain.' Nar du vill ge upp - fragda: ar detta fas 3-hoppa-tillbaka eller genuint fel vag?"
+    },
+    {
+      "id": 3,
+      "theme": "5-7 ars regeln",
+      "chapter": "The Five Emotional Stages Every Entrepreneur Goes Through",
+      "timestamp": "10:16",
+      "title": "30 dagar om och om igen",
+      "insight": "Du kan bygga nagot stort pa 5-7 ar. Problemet ar att de flesta spenderar samma 5-7 ar pa att uppleva samma 30 dagar om och om igen - hoppar fran grej till grej utan att nagonsin betala av sin 'ignorance tax'.",
+      "actionable": "Stall dig fragan: Gor jag framsteg eller upprepar jag bara samma manads lardom i aratal?"
+    },
+    {
+      "id": 4,
+      "theme": "Follow your passion - darligt rad",
+      "chapter": "Should You Follow Your Passion for Income?",
+      "timestamp": "13:36",
+      "title": "Tre skal till varfor 'Follow your passion' ar myt #2",
+      "insight": "1) Dina passioner KOMMER att forindras. Vad du alskade for 10 ar sedan ar troligen annorlunda nu. 2) Ibland ar du passionerad for saker folk inte varderar. 3) Det skapar emotionalitet som far dig att sluta nar det blir svart - aven om du ar pa ratt vag.",
+      "actionable": "Separera passion fran inkomst. Du kan folj din passion pa fritiden medan du bygger inkomst fran nagot folk faktiskt betalar for."
+    },
+    {
+      "id": 5,
+      "theme": "De tre P:na for affarideer",
+      "chapter": "Start Here to Learn the Skills That Actually Make Money",
+      "timestamp": "10:52",
+      "title": "Passion, Profession, Pain",
+      "insight": "Basta startpunkten for en affar: 1) Passion - nagot du ar genuint intresserad av, 2) Profession - det du redan far betalt for (78% av amerikanska foretag ar tjanstebaserade), 3) Pain - ett problem du sjalv har upplevt och lost.",
+      "actionable": "Lista dina 3 P:n. Vilka problem inom dessa omraden kan du skapa tjanster kring?"
+    },
+    {
+      "id": 6,
+      "theme": "10x10 Framework",
+      "chapter": "The 10 by 10 Strategy to Build Proof and Confidence",
+      "timestamp": "27:57",
+      "title": "Ge 10 personer 10 timmar gratis",
+      "insight": "Erbjud 10 personer 10 timmar gratis arbete. Gor det EN-MOT-EN och FRAMFOR dem (bygg hemsidan medan de tittar, sa de kan ge feedback). Efter 10 timmar har du: erfarenhet, testimonials, och tillrackligt reciprocitet for att fraga om betalt arbete.",
+      "actionable": "1) Oppna telefonen, 2) Hitta 10 kontakter som kan behova din tjanst, 3) Skicka personligt meddelande: 'Jag startar X. Jag ger 10 timmar gratis for att lara mig. Kanner du nagon?' De flesta svarar: 'Jag kan behova det sjalv.'"
+    },
+    {
+      "id": 7,
+      "theme": "Entitlement vs Learning",
+      "chapter": "How to Make Your First Dollar from Nothing",
+      "timestamp": "29:04",
+      "title": "Du jobbar inte gratis - du LAR dig",
+      "insight": "Att vagra jobba gratis ar entitlement. Tank omvant: skulle DU betala nagon som aldrig gjort nagot i omradet? Nej. Barande av risken ar din uppgift i borjan. Du far: gratis utbildning, testimonials (varda mer an betalning), och 60-70% av alla misstag avklarade.",
+      "actionable": "Reframe: 'Gratis arbete' = 'Betald utbildning + marknadsforingsmaterial'. En lysande testimonial ar vard mer an $1000 i langden."
+    },
+    {
+      "id": 8,
+      "theme": "Prisstrategin",
+      "chapter": "The 10 by 10 Strategy to Build Proof and Confidence",
+      "timestamp": "28:46",
+      "title": "Hoj priset 20% var femte kund",
+      "insight": "Efter gratisperioden: hoj priset med 20% for varje 5 nya kunder tills folk borjar saga nej. Da har du hittat din marknadsprissattning.",
+      "actionable": "Forsta kund: gratis. Kund 2-5: X kr. Kund 6-10: X + 20%. Fortsatt tills du far motstand."
+    },
+    {
+      "id": 9,
+      "theme": "Radsla & Kritik",
+      "chapter": "Overcoming the Fear of Selling Ourselves",
+      "timestamp": "1:02:18",
+      "title": "Kritik ar en fast kostnad",
+      "insight": "Om du gor ingenting - folk kritiserar dig. Om du gor nagot - folk kritiserar dig. KRITIK AR EN FAST KOSTNAD. Och: lyssna inte pa folk nara dig, lyssna pa folk NARA DINA MAL. De som ar storre an dig kritiserar aldrig - bara de som ar mindre.",
+      "actionable": "Forvanta kritik. Den kommer oavsett. 'Imagine the bad experience happening 1000 times in a row. How would you feel on the 1000th time? Feel that way today.'"
+    },
+    {
+      "id": 10,
+      "theme": "20-timmarsregeln",
+      "chapter": "Overcoming the Fear of Selling Ourselves",
+      "timestamp": "1:00:39",
+      "title": "20 timmar till kompetens - men det tar 10 ar",
+      "insight": "Det tar cirka 20 timmar att bli kompetent pa nastan vad som helst. Problemet: det tar folk 10 AR att fa ihop de forsta 20 timmarna. De sprider ut det for mycket.",
+      "actionable": "Jay Shettys metod: Avboka alla kvallsplaner och hela helgen. Dedikera ALLT till en farighet. Inom en manad har du lost problem som kunde tagit 6 ar."
+    },
+    {
+      "id": 11,
+      "theme": "Value Equation",
+      "chapter": "The Four Ingredients of an Irresistible Offer",
+      "timestamp": "1:28:46",
+      "title": "De fyra variablerna for varde",
+      "insight": "Value Equation - Hormozis mest kanda ramverk: 1) DREAM OUTCOME - hur stort ar resultatet? 2) PERCEIVED LIKELIHOOD - hur sannolikt ar det? (garantier okar detta) 3) TIME DELAY - hur snabbt? (imorgon > 20 ar) 4) EFFORT & SACRIFICE - vad maste kunden gora/ge upp?",
+      "actionable": "For varje erbjudande: Maximera 1 & 2 (outcome + sannolikhet), Minimera 3 & 4 (tid + anstrangning). Perfekta erbjudandet: Enormt resultat, garanterat, omedelbart, utan anstrangning. (Finns inte - men sikta dit.)"
+    },
+    {
+      "id": 12,
+      "theme": "Push vs Pivot",
+      "chapter": "When to Keep Pushing and When to Pivot",
+      "timestamp": "1:26:15",
+      "title": "Nar ge upp vs nar fortsatta",
+      "insight": "PIVOT om: Omstandigheterna har forandrats, marknaden har andrats, dina need-to-beliefs inte langre stammer. PUSH om: Villkoren ar samma och det handlar om bristande skill. Stall fragan: 'Om jag gor detta i 10 ar och fortsatter bli battre - kommer jag lyckas?' Svaret ar oftast ja.",
+      "actionable": "Skilj mellan yttre forandringar (pivot) och inre brister (push). Naval: 'It's not 10,000 hours, it's 10,000 iterations.'"
+    },
+    {
+      "id": 13,
+      "theme": "Commitment",
+      "chapter": "When to Keep Pushing and When to Pivot",
+      "timestamp": "1:30:54",
+      "title": "Commitment = eliminering av alternativ",
+      "insight": "Aktenskap ar det ultimata commitmentet - du eliminerar alla alternativ. Gora samma sak med din affar. Nar kompisen sager 'Jag tjande 10k pa X' - svara: 'Grymt! Jag kan inget om det. Jag ar 2 manader in i mitt, jag fortsatter har.'",
+      "actionable": "Identifiera och eliminera dina 'backup-planer'. De drar energi och fokus fran huvudspaket."
+    },
+    {
+      "id": 14,
+      "theme": "5-to-9 inte 9-to-5",
+      "chapter": "How to Turn Your Job Experience into a Business",
+      "timestamp": "50:42",
+      "title": "Det ar inte 9-5 som star i vagen",
+      "insight": "Folk tror deras 9-5 hindrar deras drommar. Fel. Det ar deras 5-to-9. Du har 4 prime-timmar pa morgonen (5-9) och 4 pa kvallen (5-9). Det ar 8 timmar varje dag UTOVER jobbet.",
+      "actionable": "Granska din 5-9. Hur mycket av den tiden gar till saker som faktiskt bygger mot dina mal?"
+    },
+    {
+      "id": 15,
+      "theme": "Obvious List",
+      "chapter": "The Simple Formula Everybody Has But Nobody is Doing",
+      "timestamp": "1:42:46",
+      "title": "Den uppenbara listan",
+      "insight": "Folk misslyckas inte for att det finns en magisk lista ingen kanner till. De misslyckas for att det finns en UPPENBAR lista ingen GOR. Du VET att du borde ata mindre och rora dig mer. Du VET vad du borde gora. Fragan ar: varfor gor du det inte?",
+      "actionable": "Skriv ner vad en 80-arig version av dig skulle saga at dig att gora. Det ar troligen den uppenbara listan - inte nagon magisk hemlighet."
+    },
+    {
+      "id": 16,
+      "theme": "Fokus",
+      "chapter": "Be More Productive by Eliminating Everything Unnecessary",
+      "timestamp": "1:50:35",
+      "title": "Fokus genom eliminering",
+      "insight": "Om fokus ar 'allt som INTE ar arbetet ar inte arbetet' - da kommer vi dit genom ELIMINERING, inte addition. Du kan inte 'squeeza in' fokus. 'Focus is a jealous mistress - it requires all your attention.'",
+      "actionable": "Jay Shettys insikt: Hans formagda till deep work forsvann inte - han hade bara slutat skapa utrymme for det. Nar han eliminerade distraktioner kom allt tillbaka."
+    },
+    {
+      "id": 17,
+      "theme": "Final Five Sammanfattning",
+      "chapter": "Alex on Final Five",
+      "timestamp": "1:55:17",
+      "title": "Hormozis 5 snabba svar",
+      "insight": "BASTA RAD: 'Do so much work it would be unreasonable for you not to be successful.' SAMSTA RAD: 'Follow your passion.' ONSKAT TIDIGARE: 'Find people better than you and help them first.' LAXA SOM TOG FOR LANG TID: 'Focus. One thing all in.'",
+      "actionable": "Valj ETT omrade. Ga all-in. Gor sa mycket arbete att det vore orealistiskt att misslyckas."
+    }
+  ],
+  "summary": {
+    "main_themes": [
+      "Aktiv inkomst over passiv inkomst - bygg cash flow forst",
+      "5 faser av entreprenorskap - stanna i smarta (fas 3)",
+      "10x10 framework - ge 10 personer 10 timmar gratis",
+      "Value Equation - 4 variabler for vardering av erbjudanden",
+      "Commitment = eliminering av alternativ",
+      "Kritik ar en fast kostnad - forvanta den",
+      "Den uppenbara listan ingen gor"
+    ],
+    "key_frameworks": [
+      "5 faser: Uninformed optimism -> Informed pessimism -> Valley of Despair -> Informed optimism -> Achievement",
+      "3 P:n for affarideer: Passion, Profession, Pain",
+      "10x10: 10 personer, 10 timmar gratis",
+      "Value Equation: Dream Outcome x Likelihood / (Time x Effort)",
+      "Push vs Pivot: Yttre forandringar = pivot, Skill-brist = push"
+    ],
+    "book_mentioned": "$100 Million Dollar Money Models - del av $100 Million serien"
+  },
+  "metadata": {
+    "analyzed_at": "2025-12-26",
+    "language": "sv",
+    "total_nuggets": 17,
+    "total_quotes": 15
+  }
+}
