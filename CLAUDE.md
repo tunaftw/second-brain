@@ -4,7 +4,7 @@ Quick reference for working on podcast-nuggets.
 
 ## Project Overview
 
-CLI tool to extract valuable insights ("nuggets") from YouTube videos and podcasts, then export to Apple Notes.
+CLI tool to extract valuable insights ("nuggets") from YouTube videos and podcasts, building a personal knowledge library ("2nd brain").
 
 **Owner:** Pontus (personal learning tool)
 
@@ -15,40 +15,142 @@ src/nuggets/
 ├── cli.py                 # Click CLI (main entry point)
 ├── models.py              # Pydantic models: Episode, Nugget, Theme, AnalysisConfig
 ├── config.py              # Config save/load for reusable analysis settings
+├── categories.py          # Topic and wisdom type constants
+├── library.py             # Library path utilities
+├── index.py               # Index management and search
+├── curation.py            # Star rating utilities
 ├── transcribe/
 │   ├── youtube.py         # YouTube transcript fetching (primary)
 │   └── whisper.py         # MLX Whisper fallback transcription
 ├── analyze/
 │   └── extractor.py       # Claude API analysis (extract_nuggets, create_episode)
 └── export/
-    └── apple_notes.py     # AppleScript export to Apple Notes
+    ├── apple_notes.py     # AppleScript export to Apple Notes
+    ├── markdown.py        # Markdown export
+    └── collection.py      # Multi-nugget collection export
 ```
-
-## Key Workflows
-
-### 1. YouTube Processing
-```bash
-nuggets youtube "https://youtube.com/watch?v=..."
-```
-Flow: `extract_video_id()` → `get_video_metadata()` → `get_youtube_transcript()` → (optional) `extract_nuggets()` → `save_episode()`
-
-### 2. Apple Notes Export
-```bash
-nuggets export <episode_id> --format apple-notes
-```
-Flow: Load JSON → `format_for_apple_notes()` → `export_to_apple_notes()` (AppleScript)
 
 ## Data Storage
 
-- `data/transcripts/youtube/` - Raw transcripts with timestamps
-- `data/nuggets/` - Analyzed episodes as JSON
-- `data/exports/` - Exported files
-- `data/configs/` - Saved analysis configurations
+```
+data/
+├── raw/                   # Untouched transcripts
+│   └── youtube/{channel}/{date}-{id}.json
+├── analysis/              # Processed nuggets
+│   └── youtube/{channel}/{date}-{id}.json
+├── library/               # Aggregated index
+│   └── index.json
+└── exports/               # Exported files
+```
+
+## CLI Commands
+
+```bash
+# YouTube processing
+nuggets youtube <url>                    # Process YouTube video
+nuggets youtube <url> --transcript-only  # Just fetch transcript
+
+# Index management
+nuggets index rebuild                    # Rebuild library index
+nuggets index stats                      # Show library statistics
+
+# Browsing
+nuggets list                             # List all episodes
+nuggets list --source "Huberman"         # Filter by source
+nuggets list --year 2024                 # Filter by year
+
+# Search
+nuggets search <query>                   # Full-text search
+nuggets search --topic sleep             # Filter by topic
+nuggets search --stars 2                 # Filter by min stars
+nuggets search --type insight            # Filter by nugget type
+
+# Curation
+nuggets star <nugget-id> <1-3>           # Rate a nugget
+nuggets star --interactive               # Interactive rating mode
+
+# Export
+nuggets export <episode_id>              # Export single episode (Markdown)
+nuggets export <id> --format apple-notes # Export to Apple Notes
+nuggets export --best-of                 # Export all starred nuggets
+nuggets export --topic sleep             # Export by topic
+nuggets export --stars 3 --group-by topic  # Export grouped
+```
+
+## Claude Code Skills
+
+Three skills are available for standardized workflows:
+
+### `/nuggets-ingest`
+Process new content into the library.
+- Fetch transcript
+- Analyze with Claude (auto or interactive)
+- Categorize nuggets with topic + wisdom_type
+- Update index
+
+### `/nuggets-curate`
+Review and rate nuggets.
+- Star rating: 1 (worth remembering), 2 (important), 3 (goated)
+- Interactive or batch mode
+- Export best-of compilations
+
+### `/nuggets-reflect`
+Query and discuss the knowledge library.
+- "What do I know about..."
+- Cross-source pattern finding
+- Best-of compilations
+- Time-based reflection
+
+## Categories
+
+**Topics** (auto-assigned by Claude):
+- sleep, productivity, health, relationships, business
+- creativity, learning, fitness, nutrition, mindset
+- technology, parenting, finance, communication
+
+**Wisdom Types** (auto-assigned by Claude):
+- `principle` — Fundamental truth or rule
+- `habit` — Concrete behavior to implement
+- `mental-model` — Way of thinking
+- `life-lesson` — Broad life wisdom
+- `technique` — Specific method
+- `warning` — Something to avoid
+
+## Nugget Types
+
+| Type | Icon | Description |
+|------|------|-------------|
+| `insight` | 💡 | Key learnings and principles |
+| `quote` | 💬 | Memorable quotes |
+| `action` | ✅ | Actionable advice |
+| `concept` | 📖 | Definitions and mental models |
+| `story` | 📚 | Illustrative examples |
+
+## Star Rating
+
+Personal curation system (separate from AI importance):
+
+| Stars | Meaning |
+|-------|---------|
+| ⭐ | Worth remembering |
+| ⭐⭐ | Important insight |
+| ⭐⭐⭐ | "Goated" — Core to personal philosophy |
+
+## Key Models
+
+```python
+class Nugget(BaseModel):
+    content: str              # The insight itself
+    type: NuggetType          # insight, quote, action, concept, story
+    importance: int           # AI-assigned 1-5
+    topic: str | None         # sleep, productivity, etc.
+    wisdom_type: str | None   # principle, habit, etc.
+    stars: int | None         # Personal rating 1-3
+```
 
 ## Important Implementation Details
 
 ### youtube-transcript-api (v1.x)
-The API changed in v1.x. Use instance method:
 ```python
 from youtube_transcript_api import YouTubeTranscriptApi
 fetcher = YouTubeTranscriptApi()
@@ -58,49 +160,7 @@ snippets = transcript.fetch()
 ```
 
 ### Apple Notes Export
-Uses AppleScript via `osascript`. Supports basic HTML:
-- `<h1>`, `<h2>`, `<h3>` headings
-- `<b>`, `<i>` for bold/italic
-- `<ul>`, `<li>` for lists
-- `<a href="...">` for links
-- Tags with `#hashtag` format are recognized by Apple Notes
-
-### Language Detection
-`detect_language()` in `apple_notes.py` uses word frequency to detect Swedish vs English and adjusts UI labels accordingly. The nugget *content* language depends on how the analysis was written.
-
-## Nugget Types
-
-| Type | Description |
-|------|-------------|
-| `insight` | Key learnings and principles |
-| `quote` | Memorable quotes |
-| `action` | Actionable advice |
-| `concept` | Definitions and mental models |
-| `story` | Illustrative examples |
-
-## CLI Commands
-
-```bash
-# YouTube processing
-nuggets youtube <url>           # Process YouTube video
-nuggets youtube <url> --transcript-only  # Just fetch transcript
-
-# Analysis
-nuggets analyze <transcript>    # Analyze existing transcript
-
-# Export
-nuggets export <id>             # Export to Apple Notes
-nuggets export <id> --format json  # Export as JSON
-
-# Config management
-nuggets config list             # List saved configurations
-nuggets config show <name>      # Show config details
-nuggets config delete <name>    # Delete a config
-
-# Not yet implemented
-nuggets list                    # List episodes
-nuggets search <query>          # Search nuggets
-```
+Uses AppleScript via `osascript`. Supports basic HTML formatting.
 
 ## Dependencies
 
@@ -109,63 +169,10 @@ nuggets search <query>          # Search nuggets
 - `mlx-whisper` - Apple Silicon transcription (optional)
 - `anthropic` - Claude API for analysis
 - `click` + `rich` - CLI framework
-
-## Two-Mode Analysis System
-
-### Standard Mode (CLI)
-Run `nuggets youtube <url>` for automatic analysis via Claude API (~$0.18/run).
-
-### Interactive Mode (Claude Code Session)
-For more control, work with Claude Code directly:
-
-1. **Fetch transcript only:**
-   ```bash
-   nuggets youtube <url> --transcript-only
-   ```
-
-2. **In Claude Code session:**
-   - Ask: "Analysera denna podcast interaktivt"
-   - Claude Code identifies 3-8 themes
-   - You adjust detail levels (1-5) per theme
-   - Claude Code writes nuggets JSON
-
-3. **Export:**
-   ```bash
-   nuggets export <id> --format apple-notes
-   ```
-
-### Detail Levels (1-5)
-
-| Level | Name | Description |
-|-------|------|-------------|
-| 1 | Minimal | Brief mention only |
-| 2 | Light | Key points, 1-2 nuggets |
-| 3 | Standard | Normal analysis, 2-4 nuggets |
-| 4 | Detailed | Thorough, 4-6 nuggets |
-| 5 | Exhaustive | All details + raw transcript segment |
-
-### Config System
-
-Save and reuse analysis configurations:
-```bash
-nuggets config list              # List saved configs
-nuggets config show huberman     # Show config details
-```
-
-Configs are stored in `data/configs/` as JSON.
-
-## Key Models
-
-- `DetailLevel` - Enum (1-5) for extraction depth
-- `Theme` - Identified theme with timestamps
-- `ThemeConfig` - User's preference for a theme
-- `AnalysisConfig` - Complete analysis configuration
-- `Nugget.theme` - Which theme a nugget belongs to
-- `Nugget.raw_segment` - Raw transcript for exhaustive mode
+- `pydantic` - Data models
 
 ## Future Work
 
-- [ ] Implement `nuggets list` command
-- [ ] Implement `nuggets search` command
-- [ ] Markdown export format
+- [ ] HTML visualization of library
 - [ ] Apple Podcasts integration
+- [ ] Auto-suggest new categories
