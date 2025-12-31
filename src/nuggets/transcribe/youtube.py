@@ -18,6 +18,61 @@ if TYPE_CHECKING:
     from collections.abc import Callable
 
 
+# Guest extraction patterns
+GUEST_PATTERNS = [
+    r"with\s+(.+?)(?:\s*[-:|]|$)",
+    r"^(.+?):\s+",
+    r"^(.+?)\s+-\s+",
+    r"^(.+?)\s+\|\s+",
+    r"(?:ft\.|feat\.)\s+(.+?)(?:\s*[-:|]|$)",
+    r"^#\d+\s+(.+?)(?:\s*[-:|]|$)",
+    r"^[Ee]p\.?\s*\d+[:\s]+(.+?)(?:\s*[-:|]|$)",
+]
+
+# Known podcast hosts by channel name
+KNOWN_HOSTS = {
+    "Huberman Lab": "Andrew Huberman",
+    "The Joe Rogan Experience": "Joe Rogan",
+    "Modern Wisdom": "Chris Williamson",
+    "Diary of a CEO": "Steven Bartlett",
+    "Lex Fridman Podcast": "Lex Fridman",
+    "The Tim Ferriss Show": "Tim Ferriss",
+    "Jay Shetty Podcast": "Jay Shetty",
+}
+
+
+def parse_guest_from_title(title: str) -> str | None:
+    """Extract guest name from video title.
+
+    Args:
+        title: Video title string.
+
+    Returns:
+        Guest name if detected, None otherwise.
+    """
+    for pattern in GUEST_PATTERNS:
+        match = re.search(pattern, title, re.IGNORECASE)
+        if match:
+            guest = match.group(1).strip()
+            if len(guest) > 2 and not guest.lower().startswith(
+                ("how", "what", "why", "the", "a ", "an ")
+            ):
+                return guest
+    return None
+
+
+def get_host_from_channel(channel_name: str) -> str | None:
+    """Get known host from channel name.
+
+    Args:
+        channel_name: YouTube channel name.
+
+    Returns:
+        Host name if known, None otherwise.
+    """
+    return KNOWN_HOSTS.get(channel_name)
+
+
 def extract_video_id(url: str) -> str:
     """Extract video ID from YouTube URL.
 

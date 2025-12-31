@@ -80,15 +80,57 @@ class AnalysisConfig(BaseModel):
     created_at: datetime = Field(default_factory=datetime.now)
 
 
+class Segment(BaseModel):
+    """A thematic block from an episode.
+
+    Contains raw transcript, optional edited summary, and metadata.
+    Nuggets are extracted from segments.
+    """
+
+    id: str = Field(..., description="Unique ID: segment-{episode_id}-{index}")
+    episode_id: str = Field(..., description="ID of the parent episode")
+
+    # Content levels
+    raw_segment: str = Field(..., description="Exact transcript text for this segment")
+    full: Optional[str] = Field(
+        None, description="Edited, comprehensive summary (if enough material)"
+    )
+
+    # Metadata
+    topic: str = Field(..., description="Topic category: sleep, productivity, etc.")
+    theme_name: str = Field(..., description="Human-readable theme name")
+    start_timestamp: Optional[str] = Field(None, description="Start time HH:MM:SS")
+    end_timestamp: Optional[str] = Field(None, description="End time HH:MM:SS")
+
+    # Speakers
+    speakers: list[str] = Field(default_factory=list, description="All speakers in segment")
+    primary_speaker: Optional[str] = Field(None, description="Main speaker for this segment")
+
+    # Connections (for future semantic search)
+    related_segment_ids: list[str] = Field(
+        default_factory=list, description="IDs of similar segments from other episodes"
+    )
+
+
 class Nugget(BaseModel):
     """A valuable insight extracted from content.
 
-    A nugget is a discrete piece of information worth remembering:
-    an insight, quote, action item, concept, or story.
+    Part of a Segment. Has multiple content levels for different zoom views.
     """
 
+    # Legacy field (kept for backwards compatibility)
     content: str = Field(..., description="The nugget content - clear and specific")
     type: NuggetType = Field(..., description="Type of nugget")
+
+    # Hierarchy
+    segment_id: Optional[str] = Field(None, description="ID of parent segment")
+
+    # Multi-level content (all optional except headline for new nuggets)
+    headline: Optional[str] = Field(None, description="One-line summary for scanning")
+    condensed: Optional[str] = Field(None, description="Core insight with enough context")
+    quote: Optional[str] = Field(None, description="Verbatim quote if applicable")
+
+    # Existing fields
     timestamp: Optional[str] = Field(
         None, description="Timestamp in format HH:MM:SS or MM:SS"
     )
