@@ -38,6 +38,7 @@ class SourceType(str, Enum):
     PODCAST = "podcast"
     YOUTUBE = "youtube"
     AUDIO = "audio"
+    TWITTER = "twitter"
 
 
 class Theme(BaseModel):

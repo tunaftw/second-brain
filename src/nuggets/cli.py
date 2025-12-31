@@ -985,5 +985,112 @@ def youtube(
         console.print(f"[dim]Export with: nuggets export {episode.id}[/]")
 
 
+@main.command()
+@click.argument("url")
+@click.option(
+    "--transcript-only",
+    is_flag=True,
+    help="Only fetch content, skip analysis",
+)
+def twitter(url: str, transcript_only: bool) -> None:
+    """Process a Twitter/X thread or article.
+
+    Fetches content from Twitter/X using Jina Reader and extracts nuggets.
+    Works with threads, articles, and regular tweets.
+
+    Examples:
+        nuggets twitter "https://x.com/user/status/123456"
+        nuggets twitter "https://twitter.com/user/status/789" --transcript-only
+    """
+    from nuggets.transcribe.twitter import (
+        process_twitter_source,
+        save_raw_twitter,
+        extract_author,
+    )
+
+    with console.status("[bold blue]Fetching from X..."):
+        try:
+            result = process_twitter_source(url)
+        except ValueError as e:
+            console.print(f"[red]Error:[/] {e}")
+            raise SystemExit(1)
+        except Exception as e:
+            console.print(f"[red]Error fetching content:[/] {e}")
+            raise SystemExit(1)
+
+    # Display results
+    console.print()
+    console.print(f"[green]\u2713[/] Title: [bold]{result['title']}[/]")
+    console.print(f"[green]\u2713[/] Author: @{result['author']}")
+
+    # Save raw data
+    raw_path = save_raw_twitter(result)
+    console.print(f"[green]\u2713[/] Raw data saved to: [cyan]{raw_path}[/]")
+
+    # Show content preview
+    content_lines = result["content"].split("\n")
+    preview_lines = [line for line in content_lines[:15] if line.strip()]
+    if len(content_lines) > 15:
+        preview_lines.append(f"... ({len(content_lines) - 15} more lines)")
+
+    console.print()
+    console.print(Panel("\n".join(preview_lines), title="Content Preview", border_style="dim"))
+
+    if transcript_only:
+        console.print()
+        console.print("[dim]Skipping analysis (--transcript-only)[/]")
+        return
+
+    # Analyze with Claude
+    from nuggets.analyze import extract_nuggets, save_episode, create_episode
+    from nuggets.models import SourceType
+
+    console.print()
+
+    with console.status("[bold blue]Analyzing with Claude...") as status:
+
+        def analysis_progress(msg: str) -> None:
+            status.update(f"[bold blue]{msg}")
+
+        try:
+            analysis = extract_nuggets(
+                transcript=result["content"],
+                source_name=f"@{result['author']}",
+                title=result["title"],
+                progress_callback=analysis_progress,
+            )
+        except ValueError as e:
+            console.print(f"[yellow]Analysis skipped:[/] {e}")
+            return
+        except Exception as e:
+            console.print(f"[yellow]Analysis failed:[/] {e}")
+            return
+
+    # Display results
+    console.print(f"[green]\u2713[/] Found {len(analysis.nuggets)} nuggets")
+    console.print(f"[green]\u2713[/] Tags: {', '.join(analysis.suggested_tags)}")
+
+    # Show summary
+    console.print()
+    console.print(Panel(analysis.summary, title="Summary", border_style="green"))
+
+    # Show top nuggets
+    console.print()
+    _display_nuggets(analysis.nuggets, limit=5)
+
+    # Create and save episode
+    metadata = {
+        "title": result.get("title"),
+        "channel": f"@{result['author']}",
+        "url": result.get("url"),
+    }
+    episode = create_episode(analysis, metadata, str(raw_path), SourceType.TWITTER)
+    nuggets_path = save_episode(episode)
+
+    console.print()
+    console.print(f"[green]\u2713[/] Nuggets saved to: [cyan]{nuggets_path}[/]")
+    console.print(f"[dim]Export with: nuggets export {episode.id}[/]")
+
+
 if __name__ == "__main__":
     main()

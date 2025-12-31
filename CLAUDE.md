@@ -35,9 +35,11 @@ src/nuggets/
 ```
 data/
 ├── raw/                   # Untouched transcripts
-│   └── youtube/{channel}/{date}-{id}.json
+│   ├── youtube/{channel}/{date}-{id}.json
+│   └── twitter/{author}/{date}-{id}.json
 ├── analysis/              # Processed nuggets
-│   └── youtube/{channel}/{date}-{id}.json
+│   ├── youtube/{channel}/{date}-{id}.json
+│   └── twitter/{author}/{date}-{id}.json
 ├── library/               # Aggregated index
 │   └── index.json
 └── exports/               # Exported files
@@ -49,6 +51,10 @@ data/
 # YouTube processing
 nuggets youtube <url>                    # Process YouTube video
 nuggets youtube <url> --transcript-only  # Just fetch transcript
+
+# Twitter/X processing
+nuggets twitter <url>                    # Process Twitter thread/article
+nuggets twitter <url> --transcript-only  # Just fetch content
 
 # Index management
 nuggets index rebuild                    # Rebuild library index

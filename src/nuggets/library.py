@@ -84,6 +84,16 @@ class LibraryPaths:
         """Path for analyzed podcast episode."""
         return self.base / "analysis" / "podcasts" / slugify(podcast) / f"{date}-{episode_id}.json"
 
+    # Twitter paths
+
+    def raw_twitter(self, author: str, date: str, tweet_id: str) -> Path:
+        """Path for raw Twitter/X data."""
+        return self.base / "raw" / "twitter" / slugify(author) / f"{date}-{tweet_id}.json"
+
+    def analysis_twitter(self, author: str, date: str, tweet_id: str) -> Path:
+        """Path for analyzed Twitter/X content."""
+        return self.base / "analysis" / "twitter" / slugify(author) / f"{date}-{tweet_id}.json"
+
     # Library paths
 
     @property
@@ -108,8 +118,10 @@ class LibraryPaths:
         dirs = [
             self.base / "raw" / "youtube",
             self.base / "raw" / "podcasts",
+            self.base / "raw" / "twitter",
             self.base / "analysis" / "youtube",
             self.base / "analysis" / "podcasts",
+            self.base / "analysis" / "twitter",
             self.base / "library",
             self.base / "exports",
         ]
